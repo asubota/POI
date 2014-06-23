@@ -24,22 +24,22 @@ get '/' do
   erb :index
 end
 
-get '/pois' do
+get '/api/pois' do
   data = Poi.all
   json data
 end
 
-get "/pois/:id" do
+get '/api/pois/:id' do
   data = Poi.find params[:id]
   json data
 end
 
-delete "/pois/:id" do
+delete '/api/pois/:id' do
   Poi.find(params[:id]).destroy
   status 200
 end
 
-put "/pois/:id" do
+put '/api/pois/:id' do
   data = Poi.find(params[:id])
   if data.update_attributes(params[:poi])
     status 201
@@ -50,7 +50,7 @@ put "/pois/:id" do
   end
 end
 
-post "/pois" do
+post '/api/pois' do
   data = Poi.new(params[:poi])
   if data.save
     status 200
