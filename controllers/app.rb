@@ -13,7 +13,7 @@ helpers AppHelper
 configure do
   config_file './../config/app.yml'
   set :views, settings.root + '/../views'
-  set :public_folder, File.dirname(__FILE__) + '/../assets'
+  set :public_folder, File.dirname(__FILE__) + '/../public'
 end
 
 before do
