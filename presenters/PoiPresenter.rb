@@ -1,5 +1,7 @@
 class PoiPresenter < Presenter
-	def as_list
-		@data
+	def set_photo
+		@data.each do |item|
+			item.photo ||= '/images/pois/thumb/default.jpg'
+		end
 	end
 end

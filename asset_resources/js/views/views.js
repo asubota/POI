@@ -1,9 +1,9 @@
 var PoiView = Backbone.View.extend({
   template: _.template($('#poi-template').html()),
+  className: 'column',
 
   events: {
-  'click .toggle'   : 'toggleVisited',
-  'click a.destroy' : 'clear',
+    'click .poi-delete' : 'clear',
   },
 
   initialize: function() {
@@ -18,11 +18,8 @@ var PoiView = Backbone.View.extend({
     return this;
   },
 
-  toggleVisited: function() {
-    this.model.toggle();
-  },
-
   clear: function() {
+    console.log('poi-delete');
     this.model.destroy();
   }
 });
@@ -32,7 +29,7 @@ var AppView = Backbone.View.extend({
   el: $('#main'),
 
   events: {
-    'click #clear-completed': 'clearCompleted',
+
   },
 
   initialize: function() {

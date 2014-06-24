@@ -4,9 +4,5 @@ var Poi = Backbone.Model.extend({
       title: 'New POI',
       visited:  false
     };
-  },
-
-  toggle: function() {
-    this.save({visited: !this.get('visited')});
   }
 });
