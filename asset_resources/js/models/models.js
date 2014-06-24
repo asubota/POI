@@ -2,7 +2,10 @@ var Poi = Backbone.Model.extend({
   defaults: function() {
     return {
       title: 'New POI',
-      visited:  false
+      description: null,
+      lat: null,
+      lng: null,
+      visited: false,
     };
   }
 });

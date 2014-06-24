@@ -40,23 +40,27 @@ delete '/api/pois/:id' do
 end
 
 put '/api/pois/:id' do
-  data = Poi.find(params[:id])
-  if data.update_attributes(params[:poi])
-    status 201
-    json data
+  new_params = accept_params params, :id, :title, :description, :lat, :lng, :visited, :priority
+  poi = Poi.find new_params[:id]
+
+  if poi.update_attributes new_params
+    status 200
+    json poi
   else
     status 422
-    json data.errors
+    json poi.errors
   end
 end
 
 post '/api/pois' do
-  data = Poi.new(params[:poi])
-  if data.save
+  new_params = accept_params params, :id, :title, :description, :lat, :lng, :visited, :priority
+  poi = Poi.new new_params
+
+  if poi.save
     status 200
-    json data
+    json poi
   else
     status 422
-    json data.errors
+    json poi.errors
   end
 end

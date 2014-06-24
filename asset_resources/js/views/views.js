@@ -3,7 +3,7 @@ var PoiView = Backbone.View.extend({
   className: 'column',
 
   events: {
-    'click .poi-edit'   : 'edit',
+    'click .poi-edit'   : 'showModal',
     'click .poi-delete' : 'clear',
   },
 
@@ -18,10 +18,9 @@ var PoiView = Backbone.View.extend({
     return this;
   },
 
-  edit: function() {
-    console.log( this.model );
-
-    // $('.poi-modal').modal('show');
+  showModal: function() {
+    // console.log(this.model);
+    var modal = new Modal(this.model);
   },
 
   clear: function() {
@@ -29,12 +28,40 @@ var PoiView = Backbone.View.extend({
   }
 });
 
+var Modal = Backbone.View.extend({
+  template: _.template($('#modal-template').html()),
+
+  initialize: function(model) {
+    this.model = model;
+    this.render(this.model);
+  },
+
+  events: {
+    'click .poi-save' : 'trySave'
+  },
+
+  trySave: function() {
+    var arr = ['title', 'description', 'lat', 'lng'], data = {};
+
+    _.each(arr, function(el) {
+      data[el] = this.$('.poi-'+el).val();
+    }, this);
+
+    this.model.save(data);
+    this.remove();
+  },
+
+  render: function(model) {
+    this.$el.append(this.template(this.model.toJSON()));
+    this.$('.poi-modal').modal('show');
+  }
+});
 
 var AppView = Backbone.View.extend({
   el: $('#main'),
 
   events: {
-    'click .poi-modal' : 'showModal'
+    'click .show-poi-modal' : 'showModal'
   },
 
   initialize: function() {
@@ -45,7 +72,7 @@ var AppView = Backbone.View.extend({
   },
 
   showModal: function() {
-    $('.ui.modal').modal('show');
+    var modal = new Modal(new Poi());
   },
 
   addOne: function(poi) {
