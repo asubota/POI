@@ -4,7 +4,7 @@ Dir["./models/*.rb"].each {|file| require file }
 	info = {
 		title: "poi-title-#{i}",
 		description: "poi-description-#{i}",
-		photo: "poi-photo-#{i}",
+		photo: nil,
 		priority: i,
 		visited: false,
 		lat:50,

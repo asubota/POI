@@ -17,22 +17,14 @@
 </head>
 
 <body>
-<div id="main">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="poi-list"></div>
-      </div>
-      <div class="col-sm-9">
-        <div class="map"></div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<script id="poi-template" type="text/template">
-  <%%= title %>
-</script>
-<script src="/js/app.min.js"></script>
+  <div class="ui grid" id="main">
+    <div class="six wide column"><%= erb :'shared/poi_list' %></div>
+    <div class="ten wide column"><%= erb :'shared/map' %></div>
+  </div>
+
+  <%= erb :'shared/poi_template' %>
+  <script src="/js/app.min.js"></script>
+
 </body>
 </html>

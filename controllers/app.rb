@@ -25,7 +25,7 @@ get '/' do
 end
 
 get '/api/pois' do
-  data = Poi.all
+  data = PoiPresenter.new(Poi.all).set_photo
   json data
 end
 
