@@ -3,6 +3,7 @@ var PoiView = Backbone.View.extend({
   className: 'column',
 
   events: {
+    'click .poi-edit'   : 'edit',
     'click .poi-delete' : 'clear',
   },
 
@@ -13,14 +14,18 @@ var PoiView = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
-    this.$el.toggleClass('visited', this.model.get('visited'));
 
     return this;
   },
 
+  edit: function() {
+    console.log( this.model );
+
+    // $('.poi-modal').modal('show');
+  },
+
   clear: function() {
-    console.log('poi-delete');
-    this.model.destroy();
+    // this.model.destroy();
   }
 });
 
@@ -29,7 +34,7 @@ var AppView = Backbone.View.extend({
   el: $('#main'),
 
   events: {
-
+    'click .poi-modal' : 'showModal'
   },
 
   initialize: function() {
@@ -37,6 +42,10 @@ var AppView = Backbone.View.extend({
     this.listenTo(Pois, 'all', this.render);
 
     Pois.fetch();
+  },
+
+  showModal: function() {
+    $('.ui.modal').modal('show');
   },
 
   addOne: function(poi) {
