@@ -10,5 +10,6 @@ PoiManager.Poi = Backbone.Model.extend({
       visited: false,
       photo: null
     };
-  }
+  },
+  urlRoot: '/api/pois'
 });
