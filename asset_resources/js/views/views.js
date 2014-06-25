@@ -22,16 +22,28 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   }
 });
 
-PoiManager.PoisView = Marionette.CollectionView.extend({
+PoiManager.PoisView = Marionette.CompositeView.extend({
   childView: PoiManager.PoiItemView,
-  className: 'ui one column grid'
+  className: 'ui one column grid',
+  template: '#template-poi-list',
+  childViewContainer: 'div.poi-list-items',
+
+  events: {
+    'click .poi-new-btn' : 'showModal'
+  },
+
+  showModal: function() {
+    var view = new PoiManager.ModalView({model: new PoiManager.Poi()});
+    PoiManager.modalRegion.show(view);
+    $('.ui.modal').modal('show');
+  },
 });
 
 PoiManager.ModalView = Marionette.ItemView.extend({
   template: '#modal-template',
   className: 'ui modal',
   events: {
-    'click .poi-save-btn'   : 'trySave',
+    'click .poi-save-btn' : 'trySave',
   },
 
   trySave: function() {
