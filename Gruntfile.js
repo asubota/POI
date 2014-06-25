@@ -15,6 +15,7 @@ module.exports = function(grunt) {
         vendor: [
           'asset_resources/js/vendor/jquery-2.1.1.min.js',
           'asset_resources/js/vendor/underscore-min.js',
+          'asset_resources/js/vendor/backbone-min.js',
           'asset_resources/js/vendor/*.js',
         ]
       },

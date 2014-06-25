@@ -1,11 +1,14 @@
-var Poi = Backbone.Model.extend({
+var PoiManager = new Marionette.Application();
+
+PoiManager.Poi = Backbone.Model.extend({
   defaults: function() {
     return {
-      title: 'New POI',
-      description: null,
+      title: 'New POI title',
+      description: 'New POI description',
       lat: null,
       lng: null,
       visited: false,
+      photo: null
     };
   }
 });
