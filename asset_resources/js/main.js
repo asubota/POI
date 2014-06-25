@@ -4,6 +4,7 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
 PoiManager.addRegions({
   modalRegion: '.poi-modal-region',
   poisRegion:  '.poi-list-region',
+  detailsRegion:  '.poi-details-region',
 });
 
 PoiManager.on('start', function(){
