@@ -30,7 +30,7 @@ get '/api/pois' do
 end
 
 get '/api/pois/:id' do
-  data = Poi.find params[:id]
+  data = PoiPresenter.new(Poi.find params[:id]).set_photo_single
   json data
 end
 
@@ -45,7 +45,7 @@ put '/api/pois/:id' do
 
   if poi.update_attributes new_params
     status 200
-    json poi
+    json PoiPresenter.new(poi).set_photo_single
   else
     status 422
     json poi.errors
@@ -58,7 +58,7 @@ post '/api/pois' do
 
   if poi.save
     status 200
-    json poi
+    json PoiPresenter.new(poi).set_photo_single
   else
     status 422
     json poi.errors
