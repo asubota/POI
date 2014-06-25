@@ -3,9 +3,28 @@
   <img class="ui small rounded left floated image" src="<%%= photo %>">
   <h4 class="ui header"><%%= title %></h4>
   <div class="ui buttons">
-    <div class="ui button green mini poi-info-btn">Details</div>
-    <div class="ui button mini poi-edit-btn">Edit</div>
-    <div class="ui button negative mini poi-delete-btn">Delete</div>
+
+    <div class="ui button green mini poi-info-btn animated fade">
+      <div class="visible content">Details</div>
+      <div class="hidden content">
+        <i class="info icon"></i>
+      </div>
+    </div>
+
+    <div class="ui button blue mini poi-edit-btn animated fade">
+      <div class="visible content">Edit</div>
+      <div class="hidden content">
+        <i class="edit icon"></i>
+      </div>
+    </div>
+
+    <div class="ui button negative mini poi-delete-btn animated fade">
+      <div class="visible content">Delete</div>
+      <div class="hidden content">
+        <i class="remove icon"></i>
+      </div>
+    </div>
+
   </div>
 </div>
 </script>
