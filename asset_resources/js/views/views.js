@@ -43,6 +43,17 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     PoiManager.modalRegion.show(view);
     $('.ui.modal').modal('show');
   },
+
+  onRender: function() {
+    this.collection.each(function(model) {
+      var coords = _.map(['lat', 'lng'], function(s) {
+          return model.get(s);
+        }),
+        marker = L.marker(coords).bindPopup(model.get('title'));
+
+      PoiManager.markers.addLayer(marker);
+    });
+  }
 });
 
 PoiManager.ModalView = Marionette.ItemView.extend({

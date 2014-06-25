@@ -1,5 +1,7 @@
-var map = L.map('map').setView([51, 31], 10);
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+PoiManager.map = L.map('map').setView([50.414124, 30.522423], 13);
+L.Icon.Default.imagePath = '/images';
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(PoiManager.map);
+PoiManager.markers = L.layerGroup().addTo(PoiManager.map);
 
 PoiManager.addRegions({
   modalRegion   :  '.poi-modal-region',
@@ -9,13 +11,13 @@ PoiManager.addRegions({
 
 PoiManager.on('start', function(){
   var pois = new PoiManager.PoiCollection();
-  pois.fetch();
 
-  var poisView = new PoiManager.PoisView({
-    collection: pois
-  });
-
-  PoiManager.poisRegion.show(poisView);
+  pois.fetch({success: function(data) {
+    var poisView = new PoiManager.PoisView({
+      collection: data
+    });
+    PoiManager.poisRegion.show(poisView);
+  }});
 });
 
 PoiManager.start();
