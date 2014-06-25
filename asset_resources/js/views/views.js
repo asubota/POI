@@ -8,6 +8,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   events: {
     'click .poi-delete-btn' : 'clear',
+    'click .poi-info-btn'   : 'showDetails',
     'click .poi-edit-btn'   : 'showModal'
   },
 
@@ -19,6 +20,11 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
     var view = new PoiManager.ModalView({model: this.model, collection: this.model.collection});
     PoiManager.modalRegion.show(view);
     $('.ui.modal').modal('show');
+  },
+
+  showDetails: function() {
+    var view = new PoiManager.DetailsView({model: this.model});
+    PoiManager.detailsRegion.show(view);
   }
 });
 
@@ -40,7 +46,7 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
 });
 
 PoiManager.ModalView = Marionette.ItemView.extend({
-  template: '#modal-template',
+  template: '#template-modal',
   className: 'ui modal',
   events: {
     'click .poi-save-btn' : 'trySave',
@@ -59,4 +65,9 @@ PoiManager.ModalView = Marionette.ItemView.extend({
 
     this.model.save(data);
   }
+});
+
+PoiManager.DetailsView = Marionette.ItemView.extend({
+  template: '#template-details',
+  className: 'sss'
 });

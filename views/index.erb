@@ -20,12 +20,16 @@
 
   <div class="ui grid" id="main">
     <div class="six wide column"><div class="poi-list-region"></div></div>
-    <div class="ten wide column"><%= erb :'shared/_map' %></div>
+    <div class="ten wide column">
+      <%= erb :'shared/_map' %>
+      <div class="poi-details-region"></div>
+    </div>
   </div>
 
   <%= erb :'shared/template_poi_list' %>
   <%= erb :'shared/template_poi_item' %>
   <%= erb :'shared/template_modal' %>
+  <%= erb :'shared/template_details' %>
 
   <script src="/js/app.min.js"></script>
 </body>
