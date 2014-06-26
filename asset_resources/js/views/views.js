@@ -47,7 +47,7 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   onRender: function() {
     this.collection.each(function(model) {
       var coords = _.map(['lat', 'lng'], function(s) {
-          return model.get(s);
+          return parseFloat(model.get(s));
         }),
         marker = L.marker(coords).bindPopup(model.get('title'));
 
@@ -62,25 +62,27 @@ PoiManager.ModalView = Marionette.ItemView.extend({
   template: '#template-modal',
   className: 'ui modal',
   events: {
-    'click .poi-save-btn' : 'trySave',
-    'change .poi-photo'   : 'tryUpload'
+    'click .poi-save-btn'     : 'trySave',
+    'change .poi-photo-file'  : 'tryUpload'
   },
 
   tryUpload: function(e) {
     var _this = this;
-    if (!this.$('.poi-photo').val()) {
+    if (!$(e.target).val()) {
       return;
     }
+
     this.$('form').ajaxSubmit({
       complete: function(xhr, textStatus) {
         var fileUrl = xhr.responseJSON.url;
+        _this.$('.poi-photo').val(fileUrl);
         _this.$('.poi-photo-preview').attr('src', fileUrl);
       }
     });
   },
 
   trySave: function() {
-    var arr = ['title', 'description', 'lat', 'lng'], data = {};
+    var arr = ['title', 'description', 'lat', 'lng', 'photo'], data = {};
 
     _.each(arr, function(el) {
       data[el] = this.$('.poi-'+el).val();
