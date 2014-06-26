@@ -39,7 +39,9 @@
     <div class="field">
       <label>Photo</label>
       <div class="ui left labeled icon input">
-        <input type="file" class="poi-photo">
+        <form method="POST" enctype="multipart/form-data" action="/upload">
+          <input type="file" class="poi-photo" name="file">
+          </form>
         <i class="photo icon"></i>
       </div>
     </div>

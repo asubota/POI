@@ -51,7 +51,9 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
         }),
         marker = L.marker(coords).bindPopup(model.get('title'));
 
-      PoiManager.markers.addLayer(marker);
+      if (_.size(_.compact(coords)) === 2) {
+        PoiManager.markers.addLayer(marker);
+      }
     });
   }
 });
@@ -61,6 +63,19 @@ PoiManager.ModalView = Marionette.ItemView.extend({
   className: 'ui modal',
   events: {
     'click .poi-save-btn' : 'trySave',
+    'change .poi-photo'   : 'tryUpload'
+  },
+
+  tryUpload: function(e) {
+    var _this = this;
+    if (!this.$('.poi-photo').val()) {
+      return;
+    }
+    this.$('form').ajaxSubmit({
+      complete: function(xhr, textStatus) {
+        var fileUrl = xhr.responseJSON.url;
+      }
+    });
   },
 
   trySave: function() {
