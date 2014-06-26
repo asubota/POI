@@ -1,8 +1,8 @@
 <script id="template-modal" type="text/template">
 <i class="close icon"></i>
 <div class="content">
-
   <div class="ui form segment">
+
     <div class="field">
       <label>Title</label>
       <div class="ui left labeled icon input">
@@ -27,6 +27,7 @@
           <i class="map marker icon"></i>
         </div>
       </div>
+
       <div class="field">
         <label>Longitude</label>
         <div class="ui left labeled icon input">
@@ -36,28 +37,19 @@
       </div>
     </div>
 
-    <div class="two fields">
-      <div class="field">
-        <label>Preview</label>
-        <div class="ui left labeled icon input">
+    <div class="field">
+      <label>Preview Photo</label>
+      <div class="ui left labeled icon input">
+        <label for="poi-photo-upload-btn" class="poi-preview-label">
           <img class="rounded ui image medium poi-photo-preview" src="<%%= photo %>">
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Photo</label>
-        <div class="ui left labeled icon input">
           <form method="POST" enctype="multipart/form-data" action="/upload">
-            <input type="file" class="poi-photo" name="file">
+            <input type="file" id="poi-photo-upload-btn" name="file" class="poi-photo">
             </form>
-          <i class="photo icon"></i>
-        </div>
+        </label>
       </div>
     </div>
 
   </div>
-
-</div>
 <div class="actions">
   <div class="ui button mini negative poi-cancel-btn">Cancel</div>
   <div class="ui button mini positive poi-save-btn">Save</div>
