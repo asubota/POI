@@ -98,5 +98,9 @@ PoiManager.ModalView = Marionette.ItemView.extend({
 
 PoiManager.DetailsView = Marionette.ItemView.extend({
   template: '#template-details',
-  className: 'sss'
+  className: 'ui piled teal segment',
+
+  modelEvents: {
+    'change': 'render'
+  }
 });
