@@ -105,5 +105,5 @@ end
 
 def delete_photo(photo) # images/pois/24.png
   file_path = File.join Dir.pwd, 'public', photo
-  File.delete file_path
+  File.delete file_path if File.exist? file_path
 end
