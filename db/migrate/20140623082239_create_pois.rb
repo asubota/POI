@@ -4,6 +4,7 @@ class CreatePois < ActiveRecord::Migration
       t.column :title, :string
       t.column :description, :string
       t.column :photo, :string
+      t.column :time, :string
       t.column :visited, :boolean
       t.column :priority, :integer
       t.column :lat, :float

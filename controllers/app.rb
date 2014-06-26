@@ -60,7 +60,7 @@ delete '/api/pois/:id' do
 end
 
 put '/api/pois/:id' do
-  new_params = accept_params params, :id, :title, :description, :lat, :lng, :visited, :priority, :photo
+  new_params = accept_params params, allowed_params
   poi = Poi.find new_params[:id]
 
   if poi.update_attributes new_params
@@ -74,7 +74,7 @@ put '/api/pois/:id' do
 end
 
 post '/api/pois' do
-  new_params = accept_params params, :id, :title, :description, :lat, :lng, :visited, :priority, :photo
+  new_params = accept_params params, allowed_params
   poi = Poi.new new_params
 
   if poi.save
@@ -105,5 +105,9 @@ end
 
 def delete_photo(photo) # images/pois/24.png
   file_path = File.join Dir.pwd, 'public', photo
-  File.delete file_path if File.exist? file_path
+  File.delete file_path if File.exist?(file_path) && photo !~ /default\.jpg\z/
+end
+
+def allowed_params
+  %i{id title description lat lng visited priority photo time}
 end

@@ -7,6 +7,7 @@ Dir["./models/*.rb"].each {|file| require file }
 		photo: nil,
 		priority: i,
 		visited: false,
+		time: '1h',
 		lat:50,
 		lng: 31
 	}

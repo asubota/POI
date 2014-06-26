@@ -82,7 +82,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
   },
 
   trySave: function() {
-    var arr = ['title', 'description', 'lat', 'lng', 'photo'], data = {};
+    var arr = ['title', 'description', 'lat', 'lng', 'photo', 'time'], data = {};
 
     _.each(arr, function(el) {
       data[el] = this.$('.poi-'+el).val();
