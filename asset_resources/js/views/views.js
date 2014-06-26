@@ -30,7 +30,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
 PoiManager.PoisView = Marionette.CompositeView.extend({
   childView: PoiManager.PoiItemView,
-  className: 'ui one column grid',
+  className: 'ui grid',
   template: '#template-poi-list',
   childViewContainer: 'div.poi-list-items',
 

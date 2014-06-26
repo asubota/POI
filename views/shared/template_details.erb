@@ -1,5 +1,19 @@
 <script id="template-details" type="text/template">
-<h4 class="ui header"><%%= title %></h4>
-<p><%%= description %></p>
-<p><%%= lat %> - <%%= lng %></p>
+<div class="ui piled teal segment">
+<div class="ui two column grid">
+
+<div class="column">
+  <img class="rounded ui large image" src="<%%= photo %>">
+</div>
+
+<div class="column">
+  <div class="ui segment">
+    <h3 class="ui teal header"><%%= title %></h3>
+    <div class="ui ribbon label teal"></div>
+    <p><%%= description %></p>
+  </div>
+</div>
+
+</div>
+</div>
 </script>
