@@ -30,7 +30,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
 PoiManager.PoisView = Marionette.CompositeView.extend({
   childView: PoiManager.PoiItemView,
-  className: 'ui one column grid',
+  className: 'ui grid',
   template: '#template-poi-list',
   childViewContainer: 'div.poi-list-items',
 
@@ -47,11 +47,13 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   onRender: function() {
     this.collection.each(function(model) {
       var coords = _.map(['lat', 'lng'], function(s) {
-          return model.get(s);
+          return parseFloat(model.get(s));
         }),
         marker = L.marker(coords).bindPopup(model.get('title'));
 
-      PoiManager.markers.addLayer(marker);
+      if (_.size(_.compact(coords)) === 2) {
+        PoiManager.markers.addLayer(marker);
+      }
     });
   }
 });
@@ -60,11 +62,27 @@ PoiManager.ModalView = Marionette.ItemView.extend({
   template: '#template-modal',
   className: 'ui modal',
   events: {
-    'click .poi-save-btn' : 'trySave',
+    'click .poi-save-btn'     : 'trySave',
+    'change .poi-photo-file'  : 'tryUpload'
+  },
+
+  tryUpload: function(e) {
+    var _this = this;
+    if (!$(e.target).val()) {
+      return;
+    }
+
+    this.$('form').ajaxSubmit({
+      complete: function(xhr, textStatus) {
+        var fileUrl = xhr.responseJSON.url;
+        _this.$('.poi-photo').val(fileUrl);
+        _this.$('.poi-photo-preview').attr('src', fileUrl);
+      }
+    });
   },
 
   trySave: function() {
-    var arr = ['title', 'description', 'lat', 'lng'], data = {};
+    var arr = ['title', 'description', 'lat', 'lng', 'photo', 'time'], data = {};
 
     _.each(arr, function(el) {
       data[el] = this.$('.poi-'+el).val();
@@ -80,5 +98,9 @@ PoiManager.ModalView = Marionette.ItemView.extend({
 
 PoiManager.DetailsView = Marionette.ItemView.extend({
   template: '#template-details',
-  className: 'sss'
+  className: 'ui piled teal segment',
+
+  modelEvents: {
+    'change': 'render'
+  }
 });

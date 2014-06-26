@@ -34,3 +34,5 @@ build/
 .rvmrc
 
 node_modules
+db/poi.dev.sqlite3.db
+public/images/pois

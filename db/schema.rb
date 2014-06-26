@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20140623082239) do
     t.string  "title"
     t.string  "description"
     t.string  "photo"
+    t.string  "time"
     t.boolean "visited"
     t.integer "priority"
     t.float   "lat"
