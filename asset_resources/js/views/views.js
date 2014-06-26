@@ -74,6 +74,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
     this.$('form').ajaxSubmit({
       complete: function(xhr, textStatus) {
         var fileUrl = xhr.responseJSON.url;
+        _this.$('.poi-photo-preview').attr('src', fileUrl);
       }
     });
   },

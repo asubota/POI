@@ -8,7 +8,7 @@ PoiManager.Poi = Backbone.Model.extend({
       lat: null,
       lng: null,
       visited: false,
-      photo: null
+      photo: '/images/pois/thumb/default.jpg'
     };
   },
   urlRoot: '/api/pois'
