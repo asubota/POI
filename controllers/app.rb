@@ -54,7 +54,7 @@ end
 
 delete '/api/pois/:id' do
   poi = Poi.find params[:id]
-  delete_photo poi.photo
+  delete_photo poi.photo unless poi.photo.nil?
   poi.destroy
   status 200
 end
