@@ -131,6 +131,11 @@ PoiManager.DetailsView = Marionette.ItemView.extend({
   className: 'ui piled teal segment',
 
   modelEvents: {
-    'change': 'render'
+    'change' : 'render',
+    'remove' : 'clear'
+  },
+
+  clear: function() {
+    PoiManager.detailsRegion.reset();
   }
 });
