@@ -92,8 +92,19 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   },
 
   initialize: function() {
+    var _this = this;
+
     this.on('childview:poi:showModal', function(childView){
       this.showModal(null, childView.model);
+    });
+
+    PoiManager.map.on('dblclick', function(e) {
+      var model = new PoiManager.Poi({
+        lat: e.latlng.lat,
+        lng: e.latlng.lng
+      });
+
+      _this.showModal(null, model);
     });
   }
 });
