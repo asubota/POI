@@ -15,6 +15,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   clear: function() {
     this.model.destroy();
+    PoiManager.markers.removeLayer(this.model.marker);
   },
 
   showModal: function() {
