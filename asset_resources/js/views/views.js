@@ -17,9 +17,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   },
 
   showModal: function() {
-    var view = new PoiManager.ModalView({model: this.model, collection: this.model.collection});
-    PoiManager.modalRegion.show(view);
-    $('.ui.modal').modal('show');
+    this.trigger('poi:showModal');
   },
 
   showDetails: function() {
@@ -38,8 +36,12 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     'click .poi-new-btn' : 'showModal'
   },
 
-  showModal: function() {
-    var view = new PoiManager.ModalView({model: new PoiManager.Poi(), collection: this.collection});
+  showModal: function(event, model) {
+    var view = new PoiManager.ModalView({
+      model: model || new PoiManager.Poi(),
+      collection: this.collection
+    });
+
     PoiManager.modalRegion.show(view);
     $('.ui.modal').modal('show');
   },
@@ -54,6 +56,12 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
       if (_.size(_.compact(coords)) === 2) {
         PoiManager.markers.addLayer(marker);
       }
+    });
+  },
+
+  initialize: function() {
+    this.on('childview:poi:showModal', function(childView){
+      this.showModal(null, childView.model);
     });
   }
 });
