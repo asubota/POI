@@ -5,8 +5,9 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   modelEvents: {
     'change:title': 'render',
     'change:photo': 'render',
-    'change:lat'  : 'updateMarkerCoords',
-    'change:lng'  : 'updateMarkerCoords'
+
+    'change:lat'  : 'updateMarker',
+    'change:lng'  : 'updateMarker'
   },
 
   events: {
@@ -17,7 +18,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   clear: function() {
     this.model.destroy();
-    PoiManager.markers.removeLayer(this.model.marker);
+    this.deleteMarker();
   },
 
   showModal: function() {
@@ -30,44 +31,69 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
     PoiManager.detailsRegion.show(view);
   },
 
-  updateMarkerCoords: function(e) {
+  _getCoords: function() {
+    return _.map(['lat', 'lng'], function(c) {
+      return parseFloat(this.model.get(c));
+    }, this);
+  },
+
+  setMarker: function() {
     var model = this.model,
-      coords = _.map(['lat', 'lng'], function(s) {
-        return parseFloat(model.get(s));
+      coords = this._getCoords();
+      size = _.size(_.compact(coords));
+
+    if (!model.marker && size === 2) {
+      model.marker = L.marker(coords).bindPopup();
+
+      model.marker.on('dragend', function() {
+        model.save(this.getLatLng());
+      }).on('dblclick', function() {
+        if (this.dragging.enabled()) {
+          this.dragging.disable();
+          this._icon.src = this._icon.src.replace('active-', '');
+        } else {
+          this.dragging.enable();
+          this._icon.src = this._icon.src.replace('/images/marker', '/images/active-marker');
+        }
       });
 
-    model.marker.setLatLng(coords);
+    } else if (size !== 2) {
+      this.deleteMarker();
+    }
+  },
+
+  updateMarker: function(e) {
+    var model = this.model;
+
+    this.setMarker();
+    this.showMarker();
+
+    if (model.marker) {
+      this.model.marker.setLatLng(this._getCoords());
+    }
+  },
+
+  showMarker: function() {
+    var model = this.model;
+
+    if (model.marker) {
+      PoiManager.markers.addLayer(model.marker);
+      model.marker.setPopupContent(model.get('title'));
+    }
+  },
+
+  deleteMarker: function() {
+    var model = this.model;
+
+    if (model.marker) {
+      PoiManager.markers.removeLayer(model.marker);
+      model.marker = null;
+    }
   },
 
   onRender: function(poiView) {
-    //
-    // TODO: Remove and completely rewrite this ugly code!!!
-    //
-    var model = poiView.model,
-      coords = _.map(['lat', 'lng'], function(s) {
-        return parseFloat(model.get(s));
-      }), marker;
-
-    if (_.size(_.compact(coords)) === 2) {
-      if (!model.marker) {
-        model.marker = L.marker(coords).bindPopup();
-
-        model.marker.on('dragend', function() {
-          model.save(this.getLatLng());
-        }).on('dblclick', function() {
-          if (this.dragging.enabled()) {
-            this.dragging.disable();
-            this._icon.src = this._icon.src.replace('active-', '');
-          } else {
-            this.dragging.enable();
-            this._icon.src = this._icon.src.replace('/images/marker', '/images/active-marker');
-          }
-        });
-      }
-
-      model.marker.setPopupContent(model.get('title'));
-      PoiManager.markers.addLayer(model.marker);
-    }
+    this.setMarker();
+    this.showMarker();
   }
 });
 
@@ -137,8 +163,8 @@ PoiManager.ModalView = Marionette.ItemView.extend({
   trySave: function() {
     var arr = ['title', 'description', 'lat', 'lng', 'photo', 'time'], data = {};
 
-    _.each(arr, function(el) {
-      data[el] = this.$('.poi-'+el).val();
+    _.each(arr, function(selector) {
+      data[selector] = this.$('.poi-' + selector).val();
     }, this);
 
     if (this.model.isNew()){
@@ -154,8 +180,10 @@ PoiManager.DetailsView = Marionette.ItemView.extend({
   className: 'ui piled teal segment',
 
   modelEvents: {
-    'change' : 'render',
-    'remove' : 'clear'
+    'change:time'         : 'render',
+    'change:title'        : 'render',
+    'change:description'  : 'render',
+    'remove'              : 'clear'
   },
 
   clear: function() {

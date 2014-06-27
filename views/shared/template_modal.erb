@@ -31,7 +31,7 @@
       <div class="field">
         <label>Latitude</label>
         <div class="ui left labeled icon input">
-          <input type="text" placeholder="Latitude" class="poi-lat" value="<%%= lat %>">
+          <input type="text" placeholder="Latitude" class="poi-lat" value="<%%= lat?lat:'' %>">
           <i class="map marker icon"></i>
         </div>
       </div>
@@ -39,7 +39,7 @@
       <div class="field">
         <label>Longitude</label>
         <div class="ui left labeled icon input">
-          <input type="text" placeholder="Longitude" class="poi-lng" value="<%%= lng %>">
+          <input type="text" placeholder="Longitude" class="poi-lng" value="<%%= lng?lng:'' %>">
           <i class="map marker icon"></i>
         </div>
       </div>
