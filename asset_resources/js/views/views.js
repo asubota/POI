@@ -3,7 +3,8 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   className: 'column',
 
   modelEvents: {
-    'change': 'render'
+    'change:title': 'render',
+    'change:photo': 'render'
   },
 
   events: {
@@ -22,7 +23,28 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   showDetails: function() {
     var view = new PoiManager.DetailsView({model: this.model});
+
     PoiManager.detailsRegion.show(view);
+  },
+
+  onRender: function(poiView) {
+    console.log( 'render' );
+    var model = poiView.model,
+      coords = _.map(['lat', 'lng'], function(s) {
+        return parseFloat(model.get(s));
+      }), marker;
+
+    if (_.size(_.compact(coords)) === 2) {
+      if (!model.marker) {
+        model.marker = L.marker(coords, {draggable: true}).bindPopup();
+        model.marker.on('dragend', function() {
+          model.save(this.getLatLng());
+        });
+      }
+
+      model.marker.setPopupContent(model.get('title'));
+      PoiManager.markers.addLayer(model.marker);
+    }
   }
 });
 
@@ -46,19 +68,6 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     $('.ui.modal').modal('show');
   },
 
-  onRender: function() {
-    this.collection.each(function(model) {
-      var coords = _.map(['lat', 'lng'], function(s) {
-          return parseFloat(model.get(s));
-        }),
-        marker = L.marker(coords).bindPopup(model.get('title'));
-
-      if (_.size(_.compact(coords)) === 2) {
-        PoiManager.markers.addLayer(marker);
-      }
-    });
-  },
-
   initialize: function() {
     this.on('childview:poi:showModal', function(childView){
       this.showModal(null, childView.model);
@@ -76,6 +85,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
 
   tryUpload: function(e) {
     var _this = this;
+
     if (!$(e.target).val()) {
       return;
     }
@@ -83,6 +93,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
     this.$('form').ajaxSubmit({
       complete: function(xhr, textStatus) {
         var fileUrl = xhr.responseJSON.url;
+
         _this.$('.poi-photo').val(fileUrl);
         _this.$('.poi-photo-preview').attr('src', fileUrl);
       }
@@ -97,7 +108,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
     }, this);
 
     if (this.model.isNew()){
-      this.collection.add( this.model );
+      this.collection.add(this.model);
     }
 
     this.model.save(data);
