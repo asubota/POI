@@ -28,7 +28,9 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   },
 
   onRender: function(poiView) {
-    console.log( 'render' );
+    //
+    // TODO: Remove and completely rewrite this ugly code!!!
+    //
     var model = poiView.model,
       coords = _.map(['lat', 'lng'], function(s) {
         return parseFloat(model.get(s));
@@ -36,9 +38,18 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
     if (_.size(_.compact(coords)) === 2) {
       if (!model.marker) {
-        model.marker = L.marker(coords, {draggable: true}).bindPopup();
+        model.marker = L.marker(coords).bindPopup();
+
         model.marker.on('dragend', function() {
           model.save(this.getLatLng());
+        }).on('dblclick', function() {
+          if (this.dragging.enabled()) {
+            this.dragging.disable();
+            this._icon.src = this._icon.src.replace('active-', '');
+          } else {
+            this.dragging.enable();
+            this._icon.src = this._icon.src.replace('/images/marker', '/images/active-marker');
+          }
         });
       }
 

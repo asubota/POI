@@ -3,10 +3,6 @@ L.Icon.Default.imagePath = '/images';
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(PoiManager.map);
 PoiManager.markers = L.layerGroup().addTo(PoiManager.map);
 
-PoiManager.map.on('click', function(e) {
-  // console.log(e.latlng);
-});
-
 PoiManager.addRegions({
   modalRegion   :  '.poi-modal-region',
   poisRegion    :  '.poi-list-region',
