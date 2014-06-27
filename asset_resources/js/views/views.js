@@ -4,7 +4,9 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   modelEvents: {
     'change:title': 'render',
-    'change:photo': 'render'
+    'change:photo': 'render',
+    'change:lat'  : 'updateMarkerCoords',
+    'change:lng'  : 'updateMarkerCoords'
   },
 
   events: {
@@ -26,6 +28,15 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
     var view = new PoiManager.DetailsView({model: this.model});
 
     PoiManager.detailsRegion.show(view);
+  },
+
+  updateMarkerCoords: function(e) {
+    var model = this.model,
+      coords = _.map(['lat', 'lng'], function(s) {
+        return parseFloat(model.get(s));
+      });
+
+    model.marker.setLatLng(coords);
   },
 
   onRender: function(poiView) {
