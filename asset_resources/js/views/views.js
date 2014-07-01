@@ -99,12 +99,16 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
 PoiManager.PoisView = Marionette.CompositeView.extend({
   childView: PoiManager.PoiItemView,
-  className: 'ui grid',
+  className: 'ui grid one column page',
   template: '#template-poi-list',
   childViewContainer: 'div.poi-list-items',
 
   events: {
     'click .poi-new-btn' : 'showModal'
+  },
+
+  ui: {
+    mapClick: '.ui.slider.checkbox'
   },
 
   showModal: function(event, model) {
@@ -117,6 +121,10 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     $('.ui.modal').modal('show');
   },
 
+  onRender: function() {
+    this.ui.mapClick.checkbox();
+  },
+
   initialize: function() {
     var _this = this;
 
@@ -125,6 +133,11 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     });
 
     PoiManager.map.on('dblclick', function(e) {
+      // TODO: make decision based on the checkbox's state
+      // if (_this.ui.mapClick) {
+      //   return;
+      // }
+
       var model = new PoiManager.Poi({
         lat: e.latlng.lat,
         lng: e.latlng.lng
@@ -132,6 +145,7 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
 
       _this.showModal(null, model);
     });
+
   }
 });
 
