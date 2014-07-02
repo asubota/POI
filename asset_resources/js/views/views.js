@@ -11,9 +11,9 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   },
 
   events: {
-    'click .poi-delete-btn' : 'clear',
-    'click .poi-info-btn'   : 'showDetails',
-    'click .poi-edit-btn'   : 'showModal'
+    'click .js-poi-delete-btn' : 'clear',
+    'click .js-poi-info-btn'   : 'showDetails',
+    'click .js-poi-edit-btn'   : 'showModal'
   },
 
   clear: function() {
@@ -104,7 +104,7 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   childViewContainer: 'div.poi-list-items',
 
   events: {
-    'click .poi-new-btn' : 'showModal'
+    'click .js-poi-new-btn' : 'showModal'
   },
 
   ui: {
@@ -155,8 +155,8 @@ PoiManager.ModalView = Marionette.ItemView.extend({
   template: '#template-modal',
   className: 'ui modal',
   events: {
-    'click .poi-save-btn'     : 'trySave',
-    'change .poi-photo-file'  : 'tryUpload'
+    'click .js-poi-save-btn'     : 'trySave',
+    'change .js-poi-photo-file'  : 'tryUpload'
   },
 
   tryUpload: function(e) {

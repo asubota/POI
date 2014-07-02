@@ -7,8 +7,6 @@ require 'sinatra/config_file'
 require 'sinatra/json'
 
 require 'fileutils'
-require 'carrierwave'
-# require 'carrierwave/orm/activerecord'
 
 require './helpers/app_helper'
 require './controllers/app'

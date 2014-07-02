@@ -51,7 +51,7 @@
         <label for="poi-photo-upload-btn" class="poi-preview-label">
           <img class="rounded ui image medium poi-photo-preview" src="<%%= photo %>">
           <form method="POST" enctype="multipart/form-data" action="/upload">
-            <input type="file" id="poi-photo-upload-btn" name="file" class="poi-photo-file">
+            <input type="file" id="poi-photo-upload-btn" name="file" class="js-poi-photo-file">
             </form>
         </label>
         <input type="hidden" name="poi-photo" class="poi-photo" value="<%%= photo %>">
@@ -60,8 +60,8 @@
 
   </div>
 <div class="actions">
-  <div class="ui button mini negative poi-cancel-btn">Cancel</div>
-  <div class="ui button mini positive poi-save-btn">Save</div>
+  <div class="ui button mini negative">Cancel</div>
+  <div class="ui button mini positive js-poi-save-btn">Save</div>
 </div>
 </script>
 
