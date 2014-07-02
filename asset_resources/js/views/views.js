@@ -17,8 +17,8 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   },
 
   clear: function() {
-    this.model.destroy();
     this.deleteMarker();
+    this.trigger('poi:delete', this.model);
   },
 
   showModal: function() {
@@ -127,6 +127,12 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
 
   initialize: function() {
     var _this = this;
+
+    this.on('childview:poi:delete', function(childView, model) {
+      childView.$el.fadeOut(function() {
+        model.destroy();
+      });
+    });
 
     this.on('childview:poi:showModal', function(childView){
       this.showModal(null, childView.model);
