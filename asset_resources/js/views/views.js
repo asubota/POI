@@ -11,21 +11,21 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   },
 
   events: {
-    'click .js-poi-delete-btn' : 'clear',
-    'click .js-poi-info-btn'   : 'showDetails',
-    'click .js-poi-edit-btn'   : 'showModal'
+    'click .js-poi-delete-btn' : 'deleteClicked',
+    'click .js-poi-info-btn'   : 'showClicked',
+    'click .js-poi-edit-btn'   : 'editClicked'
   },
 
-  clear: function() {
+  deleteClicked: function() {
     this.deleteMarker();
     this.trigger('poi:delete', this.model);
   },
 
-  showModal: function() {
-    this.trigger('poi:showModal');
+  editClicked: function() {
+    this.trigger('poi:edit');
   },
 
-  showDetails: function() {
+  showClicked: function() {
     var view = new PoiManager.DetailsView({model: this.model});
 
     PoiManager.detailsRegion.show(view);
@@ -134,7 +134,7 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
       });
     });
 
-    this.on('childview:poi:showModal', function(childView){
+    this.on('childview:poi:edit', function(childView) {
       this.showModal(null, childView.model);
     });
 
