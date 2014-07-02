@@ -133,10 +133,12 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     });
 
     PoiManager.map.on('dblclick', function(e) {
-      // TODO: make decision based on the checkbox's state
-      // if (_this.ui.mapClick) {
-      //   return;
-      // }
+      if (!_this.ui.mapClick.find('input').filter(':checked').length) {
+        this.doubleClickZoom.enable();
+        return;
+      } else {
+        this.doubleClickZoom.disable();
+      }
 
       var model = new PoiManager.Poi({
         lat: e.latlng.lat,
