@@ -4,9 +4,9 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(PoiManager.map);
 PoiManager.markers = L.layerGroup().addTo(PoiManager.map);
 
 PoiManager.addRegions({
-  modalRegion   :  '.poi-modal-region',
-  poisRegion    :  '.poi-list-region',
-  detailsRegion :  '.poi-details-region',
+  modalRegion   :  '.poi-region-modal',
+  poisRegion    :  '.poi-region-list',
+  detailsRegion :  '.poi-region-details'
 });
 
 PoiManager.on('start', function(){
