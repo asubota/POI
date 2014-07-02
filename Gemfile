@@ -6,7 +6,7 @@ gem "sqlite3"
 gem "sinatra-activerecord"
 gem "sinatra-contrib"
 gem "thin"
-
+gem "carrierwave"
 
 group :development do
   gem "shotgun"

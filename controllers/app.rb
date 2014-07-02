@@ -1,23 +1,12 @@
-require 'sinatra'
-require 'sinatra/activerecord'
-require 'sinatra/config_file'
-require 'sinatra/json'
-require 'fileutils'
-
-require "./helpers/app_helper"
-
 helpers AppHelper
-
-Dir["./presenters/*.rb"].each { |file| require file }
-Dir["./models/*.rb"].each {|file| require file }
 
 UPLOADS_DIR = 'uploads/pois'
 TMP_DIR = 'tmp'
 
 configure do
-  config_file './../config/app.yml'
-  set :views, settings.root + '/../views'
-  set :public_folder, File.dirname(__FILE__) + '/../public'
+  config_file './config/app.yml'
+  set :views, settings.root + '/views'
+  set :public_folder, settings.root + '/public'
   use Rack::Static, urls: ["/#{UPLOADS_DIR}"], root: TMP_DIR
 end
 
