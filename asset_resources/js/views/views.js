@@ -22,13 +22,11 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   },
 
   editClicked: function() {
-    this.trigger('poi:edit');
+    this.trigger('poi:edit', this.model);
   },
 
   showClicked: function() {
-    var view = new PoiManager.DetailsView({model: this.model});
-
-    PoiManager.detailsRegion.show(view);
+    this.trigger('poi:show', this.model);
   },
 
   _getCoords: function() {
@@ -128,14 +126,18 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   initialize: function() {
     var _this = this;
 
-    this.on('childview:poi:delete', function(childView, model) {
-      childView.$el.fadeOut(function() {
-        model.destroy();
-      });
+    this.on('childview:poi:show', function(childView, model) {
+      var detailsView = new PoiManager.DetailsView({model: model});
+
+      PoiManager.detailsRegion.show(detailsView);
     });
 
-    this.on('childview:poi:edit', function(childView) {
-      this.showModal(null, childView.model);
+    this.on('childview:poi:edit', function(childView, model) {
+      this.showModal(null, model);
+    });
+
+    this.on('childview:poi:delete', function(childView, model) {
+      model.destroy();
     });
 
     PoiManager.map.on('dblclick', function(e) {
@@ -153,8 +155,8 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
 
       _this.showModal(null, model);
     });
-
   }
+
 });
 
 PoiManager.ModalView = Marionette.ItemView.extend({
