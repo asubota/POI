@@ -19,9 +19,12 @@
 <body>
 
   <div class="ui grid" id="main">
-    <div class="four wide column"><div class="poi-region-list"></div></div>
+    <div class="four wide column">
+      <div class="poi-region-list"></div>
+    </div>
+
     <div class="twelve wide column">
-      <%= erb :'shared/_map' %>
+      <div class="ui segment"><div id="map"></div></div>
       <div class="poi-region-details"></div>
     </div>
   </div>
