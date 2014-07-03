@@ -3,11 +3,8 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   className: 'column',
 
   modelEvents: {
-    'change:title': 'render',
-    'change:photo': 'render',
-
-    'change:lat'  : 'updateMarker',
-    'change:lng'  : 'updateMarker'
+    'change:photo, change:title': 'render',
+    'change:title, change:lat, change:lng': 'updateMarker'
   },
 
   events: {
@@ -16,8 +13,12 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
     'click .js-poi-edit-btn'   : 'editClicked'
   },
 
+  updateMarker: function() {
+    PoiManager.vent.trigger('map:marker:update', this.model);
+  },
+
   deleteClicked: function() {
-    this.deleteMarker();
+    PoiManager.vent.trigger('map:marker:delete', this.model);
     this.trigger('poi:delete', this.model);
   },
 
@@ -27,71 +28,6 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   showClicked: function() {
     this.trigger('poi:show', this.model);
-  },
-
-  _getCoords: function() {
-    return _.map(['lat', 'lng'], function(c) {
-      return parseFloat(this.model.get(c));
-    }, this);
-  },
-
-  setMarker: function() {
-    var model = this.model,
-      coords = this._getCoords();
-      size = _.size(_.compact(coords));
-
-    if (!model.marker && size === 2) {
-      model.marker = L.marker(coords).bindPopup();
-
-      model.marker.on('dragend', function() {
-        model.save(this.getLatLng());
-      }).on('dblclick', function() {
-        if (this.dragging.enabled()) {
-          this.dragging.disable();
-          this._icon.src = this._icon.src.replace('active-', '');
-        } else {
-          this.dragging.enable();
-          this._icon.src = this._icon.src.replace('/images/marker', '/images/active-marker');
-        }
-      });
-
-    } else if (size !== 2) {
-      this.deleteMarker();
-    }
-  },
-
-  updateMarker: function(e) {
-    var model = this.model;
-
-    this.setMarker();
-    this.showMarker();
-
-    if (model.marker) {
-      this.model.marker.setLatLng(this._getCoords());
-    }
-  },
-
-  showMarker: function() {
-    var model = this.model;
-
-    if (model.marker) {
-      PoiManager.markers.addLayer(model.marker);
-      model.marker.setPopupContent(model.get('title'));
-    }
-  },
-
-  deleteMarker: function() {
-    var model = this.model;
-
-    if (model.marker) {
-      PoiManager.markers.removeLayer(model.marker);
-      model.marker = null;
-    }
-  },
-
-  onRender: function(poiView) {
-    this.setMarker();
-    this.showMarker();
   }
 });
 
@@ -110,12 +46,12 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   },
 
   showModal: function(event, model) {
-    var view = new PoiManager.ModalView({
+    var modalView = new PoiManager.ModalView({
       model: model || new PoiManager.Poi(),
       collection: this.collection
     });
 
-    PoiManager.modalRegion.show(view);
+    PoiManager.modalRegion.show(modalView);
     $('.ui.modal').modal('show');
   },
 
@@ -126,37 +62,24 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   initialize: function() {
     var _this = this;
 
+    this.on('add:child', function(childView) {
+      PoiManager.vent.trigger('map:marker:add', childView.model);
+    });
+    this.on('childview:poi:delete', function(childView, model) {
+      model.destroy();
+    });
     this.on('childview:poi:show', function(childView, model) {
       var detailsView = new PoiManager.DetailsView({model: model});
 
       PoiManager.detailsRegion.show(detailsView);
     });
-
     this.on('childview:poi:edit', function(childView, model) {
       this.showModal(null, model);
     });
-
-    this.on('childview:poi:delete', function(childView, model) {
-      model.destroy();
-    });
-
-    PoiManager.map.on('dblclick', function(e) {
-      if (!_this.ui.mapClick.find('input').filter(':checked').length) {
-        this.doubleClickZoom.enable();
-        return;
-      } else {
-        this.doubleClickZoom.disable();
-      }
-
-      var model = new PoiManager.Poi({
-        lat: e.latlng.lat,
-        lng: e.latlng.lng
-      });
-
+    PoiManager.vent.on('map:poi:add', function(model) {
       _this.showModal(null, model);
     });
   }
-
 });
 
 PoiManager.ModalView = Marionette.ItemView.extend({
@@ -204,10 +127,8 @@ PoiManager.DetailsView = Marionette.ItemView.extend({
   className: 'ui piled teal segment',
 
   modelEvents: {
-    'change:time'         : 'render',
-    'change:title'        : 'render',
-    'change:description'  : 'render',
-    'remove'              : 'clear'
+    'change:time, change:title, change:description': 'render',
+    'remove': 'clear'
   },
 
   clear: function() {

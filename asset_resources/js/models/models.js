@@ -1,4 +1,4 @@
-var PoiManager = new Marionette.Application();
+var PoiManager = new Backbone.Marionette.Application();
 
 PoiManager.Poi = Backbone.Model.extend({
   defaults: function() {
