@@ -18,7 +18,7 @@ post '/upload' do
   path = File.join TMP_DIR, UPLOADS_DIR
   FileUtils.mkdir_p path unless File.directory? path
 
-  unless params[:file] && (tmpfile = params[:file][:tempfile]) && (name = params[:file][:filename])
+  unless params[:photo] && (tmpfile = params[:photo][:tempfile]) && (name = params[:photo][:filename])
     status 422
     return json 'fail'
   end

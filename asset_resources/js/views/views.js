@@ -87,22 +87,29 @@ PoiManager.ModalView = Marionette.ItemView.extend({
   className: 'ui modal',
   events: {
     'click .js-poi-save-btn'     : 'trySave',
-    'change .js-poi-photo-file'  : 'tryUpload'
+    'change .js-poi-photo-file'  : 'preview'
   },
 
-  tryUpload: function(e) {
-    var _this = this;
-
+  preview: function(e) {
     if (!$(e.target).val()) {
       return;
     }
 
-    this.$('form').ajaxSubmit({
-      complete: function(xhr, textStatus) {
-        var fileUrl = xhr.responseJSON.url;
+    var data = new FormData(),
+      _this = this,
+      image = e.target.files[0];
 
-        _this.$('.poi-photo').val(fileUrl);
-        _this.$('.poi-photo-preview').attr('src', fileUrl);
+    data.append('photo', image);
+
+    $.ajax({
+      contentType: false,
+      processData: false,
+      url: '/upload',
+      data: data,
+      type: 'POST',
+      success: function(data) {
+        _this.$('.poi-photo').val(data.url);
+        _this.$('.poi-photo-preview').attr('src', data.url);
       }
     });
   },

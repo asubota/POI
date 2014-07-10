@@ -50,9 +50,7 @@
       <div class="ui left labeled icon input">
         <label for="poi-photo-upload-btn" class="poi-preview-label">
           <img class="rounded ui image medium poi-photo-preview" src="<%%= photo %>">
-          <form method="POST" enctype="multipart/form-data" action="/upload">
-            <input type="file" id="poi-photo-upload-btn" name="file" class="js-poi-photo-file">
-            </form>
+          <input type="file" id="poi-photo-upload-btn" name="photo" class="js-poi-photo-file">
         </label>
         <input type="hidden" name="poi-photo" class="poi-photo" value="<%%= photo %>">
       </div>
