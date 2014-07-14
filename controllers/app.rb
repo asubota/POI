@@ -43,8 +43,8 @@ put '/api/pois/:id' do
   new_params = accept_params params, allowed_params
   poi = Poi.find new_params[:id]
 
-  unless new_params[:photo].blank?
-    photo_path = File.join settings.public_folder, new_params[:photo]
+  unless params[:photo_path].blank?
+    photo_path = File.join settings.public_folder, params[:photo_path]
     poi.photo = File.open photo_path
   end
 
@@ -61,8 +61,8 @@ post '/api/pois' do
   new_params = accept_params params, allowed_params
   poi = Poi.new new_params
 
-  unless new_params[:photo].blank?
-    photo_path = File.join settings.public_folder, new_params[:photo]
+  unless params[:photo_path].blank?
+    photo_path = File.join settings.public_folder, params[:photo_path]
     poi.photo = File.open photo_path
   end
 

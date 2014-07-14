@@ -4,7 +4,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   modelEvents: {
     'change': 'render',
-    'change:title, change:lat, change:lng': 'updateMarker',
+    'change:title, change:lat, change:lng': 'updateMarker'
   },
 
   events: {
@@ -110,14 +110,14 @@ PoiManager.ModalView = Marionette.ItemView.extend({
       success: function(data) {
         var url = data.photo.url;
 
-        _this.$('.poi-photo').val(url);
+        _this.$('.poi-photo_path').val(url);
         _this.$('.poi-photo-preview').attr('src', url);
       }
     });
   },
 
   trySave: function() {
-    var arr = ['title', 'description', 'lat', 'lng', 'photo', 'time'], data = {};
+    var arr = ['title', 'description', 'lat', 'lng', 'photo_path', 'time'], data = {};
 
     _.each(arr, function(selector) {
       data[selector] = this.$('.poi-' + selector).val();
@@ -128,7 +128,6 @@ PoiManager.ModalView = Marionette.ItemView.extend({
     }
 
     this.model.save(data, {
-      wait: true,
       success: function(model, data) {
         model.set(data);
       }
@@ -141,7 +140,7 @@ PoiManager.DetailsView = Marionette.ItemView.extend({
   className: 'ui piled teal segment',
 
   modelEvents: {
-    'change:time, change:title, change:description': 'render',
+    'change': 'render',
     'remove': 'clear'
   },
 
