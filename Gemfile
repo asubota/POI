@@ -7,6 +7,7 @@ gem "sinatra-activerecord"
 gem "sinatra-contrib"
 gem "thin"
 gem "carrierwave"
+gem "mini_magick"
 
 group :development do
   gem "shotgun"

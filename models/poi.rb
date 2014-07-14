@@ -1,3 +1,4 @@
 class Poi < ActiveRecord::Base
-	mount_uploader :photo, PhotoUploader
+  attr_accessor :photo_cache
+  mount_uploader :photo, PhotoUploader
 end
