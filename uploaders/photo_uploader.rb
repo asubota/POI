@@ -12,14 +12,14 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   def store_dir
-    'public/my/upload/directory'
+    "images/pois"
   end
 
   def cache_dir
-    'tmp1/projectname-cache'
+    "tmp_upload"
   end
 
   def extension_white_list
-    %w(jpg jpeg gif png)
+    %w{jpg jpeg gif png}
   end
 end
