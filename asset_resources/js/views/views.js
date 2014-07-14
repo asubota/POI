@@ -4,7 +4,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
   modelEvents: {
     'change': 'render',
-    'change:title, change:lat, change:lng': 'updateMarker'
+    'change': 'updateMarker'
   },
 
   events: {
@@ -129,7 +129,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
 
     this.model.save(data, {
       success: function(model, data) {
-        model.set(data);
+        model.set('photo', data.photo);
       }
     });
   }
