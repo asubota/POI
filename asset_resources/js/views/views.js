@@ -58,11 +58,15 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     this.ui.mapClick.checkbox();
   },
 
-  onChildviewPoiShow: function(childView, model) {
+  _showDetails: function(model) {
     var detailsView = new PoiManager.DetailsView({model: model});
 
     PoiManager.detailsRegion.show(detailsView);
     PoiManager.vent.trigger('map:marker:panto', model);
+  },
+
+  onChildviewPoiShow: function(childView, model) {
+    this._showDetails(model);
   },
 
   onChildviewPoiEdit: function(childView, model) {
@@ -72,8 +76,12 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   initialize: function() {
     var _this = this;
 
-    PoiManager.vent.on('map:poi:add', function(model) {
+    PoiManager.vent.on('map:marker:add', function(model) {
       _this.showModal(null, model);
+    });
+
+    PoiManager.vent.on('map:marker:click', function(model) {
+      _this._showDetails(model);
     });
   }
 });

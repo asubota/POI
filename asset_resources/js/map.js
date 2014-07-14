@@ -35,6 +35,10 @@ var MAP = {
         this._icon.src = this._icon.src.replace('/images/marker', '/images/active-marker');
       }
     });
+
+    model.marker.on('click', function(event) {
+      PoiManager.vent.trigger('map:marker:click', model);
+    });
   },
   _updateMarkerTitle: function(model) {
     if (model.marker) {
@@ -101,5 +105,5 @@ MAP.map.on('dblclick', function(e) {
     lng: e.latlng.lng
   });
 
-  PoiManager.vent.trigger('map:poi:add', model);
+  PoiManager.vent.trigger('map:marker:add', model);
 });
