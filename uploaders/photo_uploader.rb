@@ -3,8 +3,23 @@ class PhotoUploader < CarrierWave::Uploader::Base
 
   storage :file
 
-  version :thumb do
-    process :resize_to_fill => [200,200]
+  version :full do
+    process resize_to_fill: [800,600]
+  end
+
+  version :medium, from_version: :full do
+    process resize_to_fill: [400,300]
+  end
+
+  version :small, from_version: :medium do
+    process resize_to_fill: [120,90]
+  end
+
+  def filename
+    if original_filename.present?
+      name ||= Digest::MD5.hexdigest File.dirname(current_path)
+      "#{name}.#{file.extension}"
+    end
   end
 
   def default_url

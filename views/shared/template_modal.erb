@@ -49,10 +49,10 @@
       <label>Preview Photo</label>
       <div class="ui left labeled icon input">
         <label for="poi-photo-upload-btn" class="poi-preview-label">
-          <img class="rounded ui image medium poi-photo-preview" src="<%%= photo %>">
+          <img class="rounded ui image medium poi-photo-preview" src="<%%= photo.medium.url %>">
           <input type="file" id="poi-photo-upload-btn" name="photo" class="js-poi-photo-file">
         </label>
-        <input type="hidden" name="photo" class="poi-photo" value="<%%= photo %>">
+        <input type="hidden" name="photo" class="poi-photo" value="">
       </div>
     </div>
 

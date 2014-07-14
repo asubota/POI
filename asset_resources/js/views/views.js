@@ -3,8 +3,8 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   className: 'column',
 
   modelEvents: {
-    'change:photo, change:title': 'render',
-    'change:title, change:lat, change:lng': 'updateMarker'
+    'change': 'render',
+    'change:title, change:lat, change:lng': 'updateMarker',
   },
 
   events: {
@@ -127,7 +127,12 @@ PoiManager.ModalView = Marionette.ItemView.extend({
       this.collection.add(this.model);
     }
 
-    this.model.save(data);
+    this.model.save(data, {
+      wait: true,
+      success: function(model, data) {
+        model.set(data);
+      }
+    });
   }
 });
 
