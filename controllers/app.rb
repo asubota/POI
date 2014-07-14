@@ -15,16 +15,8 @@ before do
 end
 
 post '/upload' do
-  path = File.join TMP_DIR, UPLOADS_DIR
-  FileUtils.mkdir_p path unless File.directory? path
-
-  unless params[:photo] && (tmpfile = params[:photo][:tempfile]) && (name = params[:photo][:filename])
-    status 422
-    return json 'fail'
-  end
-
-  FileUtils.copy tmpfile.path, "#{path}/#{name}"
-  json url: File.join(UPLOADS_DIR, name)
+  poi = Poi.new photo: params[:photo]
+  json poi.photo
 end
 
 get '/' do

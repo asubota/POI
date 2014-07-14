@@ -7,8 +7,11 @@ require 'sinatra/config_file'
 require 'sinatra/json'
 
 require 'fileutils'
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
 
 require './helpers/app_helper'
+require './uploaders/photo_uploader'
 require './controllers/app'
 
 Dir['./presenters/*.rb'].each { |file| require file }

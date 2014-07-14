@@ -95,21 +95,23 @@ PoiManager.ModalView = Marionette.ItemView.extend({
       return;
     }
 
-    var data = new FormData(),
-      _this = this,
-      image = e.target.files[0];
+    var _this = this,
+      image = e.target.files[0],
+      fd = new FormData();
 
-    data.append('photo', image);
+    fd.append('photo', image);
 
     $.ajax({
       contentType: false,
       processData: false,
       url: '/upload',
-      data: data,
+      data: fd,
       type: 'POST',
       success: function(data) {
-        _this.$('.poi-photo').val(data.url);
-        _this.$('.poi-photo-preview').attr('src', data.url);
+        var url = data.photo.url;
+
+        _this.$('.poi-photo').val(url);
+        _this.$('.poi-photo-preview').attr('src', url);
       }
     });
   },

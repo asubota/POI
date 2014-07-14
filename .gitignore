@@ -36,6 +36,7 @@ build/
 node_modules
 db/poi.dev.sqlite3.db
 public/images/pois
+public/uploads/
 
 public/images/active-marker-icon-2x.png
 public/images/active-marker-icon.png
