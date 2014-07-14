@@ -67,6 +67,13 @@ MAP.markers = L.layerGroup().addTo(MAP.map);
 L.Icon.Default.imagePath = '/images';
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(MAP.map);
 
+PoiManager.vent.on('map:marker:panto', function(model) {
+  if (model.marker) {
+    MAP.map.panTo(model.marker._latlng);
+    model.marker.openPopup();
+  }
+});
+
 PoiManager.vent.on('map:marker:add', function(model) {
   MAP.markerAdd(model);
 });

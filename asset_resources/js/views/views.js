@@ -3,8 +3,7 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
   className: 'column',
 
   modelEvents: {
-    'change': 'render',
-    'change': 'updateMarker'
+    'change': 'render'
   },
 
   events: {
@@ -13,13 +12,13 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
     'click .js-poi-edit-btn'   : 'editClicked'
   },
 
-  updateMarker: function() {
+  onRender: function() {
     PoiManager.vent.trigger('map:marker:update', this.model);
   },
 
   deleteClicked: function() {
     PoiManager.vent.trigger('map:marker:delete', this.model);
-    this.trigger('poi:delete', this.model);
+    this.model.destroy();
   },
 
   editClicked: function() {
@@ -59,23 +58,20 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
     this.ui.mapClick.checkbox();
   },
 
+  onChildviewPoiShow: function(childView, model) {
+    var detailsView = new PoiManager.DetailsView({model: model});
+
+    PoiManager.detailsRegion.show(detailsView);
+    PoiManager.vent.trigger('map:marker:panto', model);
+  },
+
+  onChildviewPoiEdit: function(childView, model) {
+    this.showModal(null, model);
+  },
+
   initialize: function() {
     var _this = this;
 
-    this.on('add:child', function(childView) {
-      PoiManager.vent.trigger('map:marker:add', childView.model);
-    });
-    this.on('childview:poi:delete', function(childView, model) {
-      model.destroy();
-    });
-    this.on('childview:poi:show', function(childView, model) {
-      var detailsView = new PoiManager.DetailsView({model: model});
-
-      PoiManager.detailsRegion.show(detailsView);
-    });
-    this.on('childview:poi:edit', function(childView, model) {
-      this.showModal(null, model);
-    });
     PoiManager.vent.on('map:poi:add', function(model) {
       _this.showModal(null, model);
     });
