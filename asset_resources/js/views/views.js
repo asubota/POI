@@ -89,8 +89,8 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   initialize: function() {
     var _this = this;
 
-    PoiManager.vent.on('map:marker:add', function(model) {
-      _this.showModal(null, model);
+    PoiManager.vent.on('map:marker:new', function(geo) {
+      _this.showModal(null, new PoiManager.Poi(geo));
     });
 
     PoiManager.vent.on('map:marker:click', function(model) {

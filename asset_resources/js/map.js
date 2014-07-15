@@ -100,10 +100,6 @@ PoiManager.vent.on('map:marker:panto', function(model) {
   }
 });
 
-PoiManager.vent.on('map:marker:add', function(model) {
-  MAP.markerAdd(model);
-});
-
 PoiManager.vent.on('map:marker:delete', function(model) {
   MAP.markerDelete(model);
 });
@@ -129,8 +125,6 @@ PoiManager.vent.on('map:option:cluster', function(value) {
 });
 
 MAP.map.on('dblclick', function(e) {
-  var model;
-
   if (!MAP.options.dblclickToAddMarker) {
     this.doubleClickZoom.enable();
     return;
@@ -138,10 +132,5 @@ MAP.map.on('dblclick', function(e) {
     this.doubleClickZoom.disable();
   }
 
-  model = new PoiManager.Poi({
-    lat: e.latlng.lat,
-    lng: e.latlng.lng
-  });
-
-  PoiManager.vent.trigger('map:marker:add', model);
+  PoiManager.vent.trigger('map:marker:new', e.latlng);
 });
