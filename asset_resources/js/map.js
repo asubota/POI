@@ -10,18 +10,18 @@ var MAP = {
     });
   },
   markerAdd: function(model) {
-    var coords = MAP.getCoords(model),
+    var coords = this.getCoords(model),
       size = _.size(_.compact(coords));
 
     if (size === 2) {
       model.marker = L.marker(coords).bindPopup(model.get('title'));
-      MAP.markers.addLayer(model.marker);
-      MAP._bindMarker(model);
+      this._bindMarker(model);
+      this.currentMarkersGroup().addLayer(model.marker);
     }
   },
   markerDelete: function(model) {
     if (model.marker) {
-      MAP.markers.removeLayer(model.marker);
+      this.currentMarkersGroup().removeLayer(model.marker);
       model.marker = null;
     }
   },
@@ -53,26 +53,40 @@ var MAP = {
     var coords, size;
 
     if (!model.marker) {
-      MAP.markerAdd(model);
+      this.markerAdd(model);
     } else {
-      coords = MAP.getCoords(model);
+      coords = this.getCoords(model);
       size = _.size(_.compact(coords));
 
       if (size === 2) {
         model.marker.setLatLng(coords);
       } else {
-        MAP.markerDelete(model);
+        this.markerDelete(model);
       }
     }
   },
   markerUpdate: function(model) {
-    MAP._updateMarkerTitle(model);
-    MAP._updateMarkerGeo(model);
+    this._updateMarkerTitle(model);
+    this._updateMarkerGeo(model);
+  },
+  markers: {
+    cluster: L.markerClusterGroup({spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false }),
+    common: L.layerGroup()
+  },
+  currentMarkersGroup: function() {
+    if (this.options.markerClustering) {
+      return this.markers.cluster;
+    } else {
+      return this.markers.common;
+    }
   }
 };
 
-MAP.markers = L.markerClusterGroup({spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false }).addTo(MAP.map);
-MAP.markers.on('clusterclick', function (event) {
+_.each(MAP.markers, function(group) {
+  group.addTo(MAP.map);
+});
+
+MAP.markers.cluster.on('clusterclick', function (event) {
   event.layer.zoomToBounds();
 });
 
@@ -103,8 +117,15 @@ PoiManager.vent.on('map:option:dblclick', function(value) {
 });
 
 PoiManager.vent.on('map:option:cluster', function(value) {
+  var currentGroup = MAP.currentMarkersGroup(),
+    markers = currentGroup.getLayers();
+
+  currentGroup.clearLayers();
   MAP.options.markerClustering = value;
-  console.log(value);
+
+  _.each(markers, function(marker) {
+    this.addLayer(marker);
+  }, MAP.currentMarkersGroup());
 });
 
 MAP.map.on('dblclick', function(e) {
