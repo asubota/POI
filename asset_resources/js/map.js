@@ -1,5 +1,5 @@
 var MAP = {
-  map: L.map('map').setView([50.414124, 30.522423], 13),
+  map: L.map('map', {maxZoom: 18}).setView([50.414124, 30.522423], 13),
   getCoords: function(model) {
     return _.map(['lat', 'lng'], function(c) {
       return parseFloat(model.get(c));
@@ -67,7 +67,11 @@ var MAP = {
   }
 };
 
-MAP.markers = L.layerGroup().addTo(MAP.map);
+MAP.markers = L.markerClusterGroup({spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false }).addTo(MAP.map);
+MAP.markers.on('clusterclick', function (event) {
+  event.layer.zoomToBounds();
+});
+
 L.Icon.Default.imagePath = '/images';
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(MAP.map);
 
