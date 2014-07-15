@@ -19,4 +19,9 @@ module AppHelper
   def get_title
     settings.appName
   end
+
+  def allowed_params
+    %i{id title description lat lng visited priority photo time}
+  end
+
 end

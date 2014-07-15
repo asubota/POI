@@ -1,13 +1,9 @@
 helpers AppHelper
 
-UPLOADS_DIR = 'uploads/pois'
-TMP_DIR = 'tmp'
-
 configure do
   config_file './config/app.yml'
   set :views, settings.root + '/views'
   set :public_folder, settings.root + '/public'
-  use Rack::Static, urls: ["/#{UPLOADS_DIR}"], root: TMP_DIR
 end
 
 before do
@@ -73,9 +69,4 @@ post '/api/pois' do
     status 422
     json poi.errors
   end
-end
-
-private
-def allowed_params
-  %i{id title description lat lng visited priority photo time}
 end
