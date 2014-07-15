@@ -41,7 +41,7 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   },
 
   ui: {
-    mapClick: '.ui.slider.checkbox'
+    mapClick: '.js-poi-add-on-map'
   },
 
   showModal: function(event, model) {
@@ -55,7 +55,16 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   },
 
   onRender: function() {
-    this.ui.mapClick.checkbox();
+    var checkboxOptions = {
+      onEnable: function() {
+        PoiManager.vent.trigger('map:option:dblclick', true);
+      },
+      onDisable: function() {
+        PoiManager.vent.trigger('map:option:dblclick', false);
+      }
+    };
+
+    this.ui.mapClick.checkbox(checkboxOptions);
   },
 
   _showDetails: function(model) {
