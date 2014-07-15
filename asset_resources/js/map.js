@@ -1,7 +1,8 @@
 var MAP = {
   map: L.map('map', {maxZoom: 18}).setView([50.414124, 30.522423], 13),
   options: {
-    dblclickToAddMarker: false
+    dblclickToAddMarker: false,
+    markerClustering: true
   },
   getCoords: function(model) {
     return _.map(['lat', 'lng'], function(c) {
@@ -99,6 +100,11 @@ PoiManager.vent.on('map:marker:update', function(model) {
 
 PoiManager.vent.on('map:option:dblclick', function(value) {
   MAP.options.dblclickToAddMarker = value;
+});
+
+PoiManager.vent.on('map:option:cluster', function(value) {
+  MAP.options.markerClustering = value;
+  console.log(value);
 });
 
 MAP.map.on('dblclick', function(e) {

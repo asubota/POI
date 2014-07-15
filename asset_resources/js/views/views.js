@@ -41,7 +41,8 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   },
 
   ui: {
-    mapClick: '.js-poi-add-on-map'
+    mapClick:   '.js-poi-add-on-map',
+    mapCluster: '.js-poi-cluster'
   },
 
   showModal: function(event, model) {
@@ -55,16 +56,19 @@ PoiManager.PoisView = Marionette.CompositeView.extend({
   },
 
   onRender: function() {
-    var checkboxOptions = {
-      onEnable: function() {
-        PoiManager.vent.trigger('map:option:dblclick', true);
-      },
-      onDisable: function() {
-        PoiManager.vent.trigger('map:option:dblclick', false);
-      }
-    };
+    var options = _.object(_.map(['cluster', 'dblclick'], function(type) {
+      return [type, {
+        onEnable: function() {
+          PoiManager.vent.trigger(['map:option', type].join(':'), true);
+        },
+        onDisable: function() {
+          PoiManager.vent.trigger(['map:option', type].join(':'), false);
+        }
+      }];
+    }));
 
-    this.ui.mapClick.checkbox(checkboxOptions);
+    this.ui.mapClick.checkbox(options.dblclick);
+    this.ui.mapCluster.checkbox('enable').checkbox(options.cluster);
   },
 
   _showDetails: function(model) {
