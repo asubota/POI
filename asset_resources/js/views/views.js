@@ -153,11 +153,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
       this.collection.add(this.model);
     }
 
-    this.model.save(data, {
-      success: function(model, data) {
-        model.set('photo', data.photo);
-      }
-    });
+    this.model.save(data, {wait: true});
   }
 });
 
