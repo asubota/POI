@@ -107,6 +107,10 @@ PoiManager.ModalView = Marionette.ItemView.extend({
     'change .js-poi-photo-file'  : 'preview'
   },
 
+  ui: {
+    update: '#js-update-lat-lng'
+  },
+
   preview: function(e) {
     if (!$(e.target).val()) {
       return;
@@ -127,7 +131,7 @@ PoiManager.ModalView = Marionette.ItemView.extend({
       success: function(data) {
         var url = data.photo.url;
 
-        if (true) {
+        if (_this.model.isNew() || _this.ui.update.prop('checked')) {
           _this.$('.poi-lat').val(data.lat);
           _this.$('.poi-lng').val(data.lng);
         }

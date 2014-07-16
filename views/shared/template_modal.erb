@@ -51,8 +51,15 @@
         <label for="poi-photo-upload-btn" class="poi-preview-label">
           <img class="rounded ui image medium poi-photo-preview" src="<%%= photo.medium.url %>">
           <input type="file" id="poi-photo-upload-btn" name="photo" class="js-poi-photo-file">
+          <input type="hidden" class="poi-photo_path" value="">
         </label>
-        <input type="hidden" class="poi-photo_path" value="">
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="ui checkbox js-update-lat-lng">
+        <input type="checkbox" id="js-update-lat-lng">
+        <label for="js-update-lat-lng">Update Latitude & Longitude</label>
       </div>
     </div>
 
