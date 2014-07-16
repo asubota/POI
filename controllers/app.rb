@@ -12,7 +12,7 @@ end
 
 post '/upload' do
   poi = Poi.new photo: params[:photo]
-  json poi.photo
+  json poi
 end
 
 get '/' do

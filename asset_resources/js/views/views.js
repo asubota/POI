@@ -127,6 +127,11 @@ PoiManager.ModalView = Marionette.ItemView.extend({
       success: function(data) {
         var url = data.photo.url;
 
+        if (true) {
+          _this.$('.poi-lat').val(data.lat);
+          _this.$('.poi-lng').val(data.lng);
+        }
+
         _this.$('.poi-photo_path').val(url);
         _this.$('.poi-photo-preview').attr('src', url);
       }
