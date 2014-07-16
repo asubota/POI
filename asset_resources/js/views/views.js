@@ -1,14 +1,14 @@
 PoiManager.PoiItemView = Marionette.ItemView.extend({
   template: '#template-poi-item',
-  className: 'column',
+  className: 'item',
 
   modelEvents: {
     'change': 'render'
   },
 
   events: {
+    'click'                    : 'showClicked',
     'click .js-poi-delete-btn' : 'deleteClicked',
-    'click .js-poi-info-btn'   : 'showClicked',
     'click .js-poi-edit-btn'   : 'editClicked'
   },
 
@@ -16,12 +16,14 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
     PoiManager.vent.trigger('map:marker:update', this.model);
   },
 
-  deleteClicked: function() {
+  deleteClicked: function(event) {
+    event.stopPropagation();
     PoiManager.vent.trigger('map:marker:delete', this.model);
     this.model.destroy();
   },
 
-  editClicked: function() {
+  editClicked: function(event) {
+    event.stopPropagation();
     this.trigger('poi:edit', this.model);
   },
 
@@ -32,9 +34,9 @@ PoiManager.PoiItemView = Marionette.ItemView.extend({
 
 PoiManager.PoisView = Marionette.CompositeView.extend({
   childView: PoiManager.PoiItemView,
-  className: 'ui grid one column page',
+  className: 'ui grid one column',
   template: '#template-poi-list',
-  childViewContainer: 'div.poi-list-items',
+  childViewContainer: '.poi-items',
 
   events: {
     'click .js-poi-new-btn' : 'showModal'
