@@ -12,7 +12,7 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   version :small, from_version: :medium do
-    process resize_to_fill: [120,90]
+    process resize_to_fill: [60,45]
   end
 
   def filename

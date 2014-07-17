@@ -1,27 +1,9 @@
-require 'rubygems'
-require 'bundler/setup'
-
-require 'sinatra'
-require 'sinatra/activerecord'
-require 'sinatra/config_file'
-require 'sinatra/json'
-
-require 'fileutils'
-require 'carrierwave'
-require 'carrierwave/orm/activerecord'
-
-require './helpers/app_helper'
-require './uploaders/photo_uploader'
-
-Dir['./presenters/*.rb'].each { |file| require file }
-Dir['./models/*.rb'].each { |file| require file }
-
 helpers AppHelper
 
 configure do
-  config_file './../config/app.yml'
-  set :views, settings.root + '/../views'
-  set :public_folder, settings.root + '/../public'
+  config_file './config/app.yml'
+  set :views, settings.root + '/views'
+  set :public_folder, settings.root + '/public'
 end
 
 before do
@@ -30,7 +12,7 @@ end
 
 post '/upload' do
   poi = Poi.new photo: params[:photo]
-  json poi
+  json PoiPresenter.prepare(poi)
 end
 
 get '/' do
@@ -38,17 +20,19 @@ get '/' do
 end
 
 get '/api/pois' do
-  data = PoiPresenter.new(Poi.all).prepare
-  json data
+  json PoiPresenter.prepare(Poi.all)
 end
 
 get '/api/pois/:id' do
-  data = PoiPresenter.new(Poi.find params[:id]).prepare_single
-  json data
+  new_params = accept_params params, allowed_params
+  poi = Poi.find new_params[:id]
+
+  json PoiPresenter.prepare(poi)
 end
 
 delete '/api/pois/:id' do
-  poi = Poi.find params[:id]
+  new_params = accept_params params, allowed_params
+  poi = Poi.find new_params[:id]
   poi.destroy
   status 200
 end
@@ -64,7 +48,7 @@ put '/api/pois/:id' do
 
   if poi.update_attributes new_params
     status 200
-    json PoiPresenter.new(poi).prepare_single
+    json PoiPresenter.prepare(poi)
   else
     status 422
     json poi.errors
@@ -82,7 +66,7 @@ post '/api/pois' do
 
   if poi.save
     status 200
-    json PoiPresenter.new(poi).prepare_single
+    json PoiPresenter.prepare(poi)
   else
     status 422
     json poi.errors
