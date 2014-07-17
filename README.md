@@ -10,18 +10,26 @@ POI
 
         $ bundle install
 
-3. Migrate the database.
+3. Create databases
+
+        $ rake db:create:all
+
+4. Perform db migrations
 
         $ rake db:migrate
+  or
+        $ rake db:migrate RACK_ENV=test
 
-4. Install Node.js modules
+5. Install Node.js modules
 
         $ npm install
 
-5. Run default grunt tasks
+6. Run default grunt tasks
 
         $ grunt
 
-6. To run the app, use the following command:
+7. To run the app, use the following command:
 
         $ rackup
+  or
+        $ thin start
