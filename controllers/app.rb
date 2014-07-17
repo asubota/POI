@@ -1,9 +1,27 @@
+require 'rubygems'
+require 'bundler/setup'
+
+require 'sinatra'
+require 'sinatra/activerecord'
+require 'sinatra/config_file'
+require 'sinatra/json'
+
+require 'fileutils'
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
+
+require './helpers/app_helper'
+require './uploaders/photo_uploader'
+
+Dir['./presenters/*.rb'].each { |file| require file }
+Dir['./models/*.rb'].each { |file| require file }
+
 helpers AppHelper
 
 configure do
-  config_file './config/app.yml'
-  set :views, settings.root + '/views'
-  set :public_folder, settings.root + '/public'
+  config_file './../config/app.yml'
+  set :views, settings.root + '/../views'
+  set :public_folder, settings.root + '/../public'
 end
 
 before do

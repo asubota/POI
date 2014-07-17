@@ -1,3 +1,9 @@
 development:
-  adapter: 'sqlite3'
-  database: 'db/poi.dev.sqlite3.db'
+  adapter: sqlite3
+  database: db/poi.dev.sqlite3.db
+  encoding: unicode
+
+test:
+  adapter: sqlite3
+  database: db/poi.test.sqlite3.db
+  encoding: unicode
