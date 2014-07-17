@@ -107,9 +107,21 @@ module.exports = function(grunt) {
       }
     },
 
+    jasmine: {
+      app: {
+        src: '<%= files.js.main %>',
+        options: {
+          specs: 'spec/javascript/jasmine/**/*Spec.js',
+          helpers: 'spec/javascript/helpers/*Helper.js',
+          vendor: '<%= files.build.lib %>',
+          styles: '<%= files.build.css %>'
+        }
+      }
+    },
+
     watch: {
-      files: ['<%= files.js.main %>', '<%= files.less %>'],
-      tasks: ['jshint', 'uglify', 'less', 'concat', 'copy']
+      files: ['Gruntfile.js', '<%= files.js.main %>', '<%= files.less %>', 'spec/javascript/jasmine/**/*Spec.js'],
+      tasks: ['jshint', 'uglify', 'less', 'concat', 'copy', 'jasmine']
     }
   });
 
@@ -120,6 +132,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-notify');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   // Default task(s).
   grunt.registerTask('default', ['jshint', 'uglify', 'less', 'concat', 'copy']);
