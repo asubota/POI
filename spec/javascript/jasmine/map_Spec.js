@@ -1,0 +1,3 @@
+describe('Leaflet map', function() {
+
+});

@@ -1,0 +1,3 @@
+describe('POI ItemView', function() {
+
+});

@@ -1,0 +1,3 @@
+describe('POI CompositeView', function() {
+
+});

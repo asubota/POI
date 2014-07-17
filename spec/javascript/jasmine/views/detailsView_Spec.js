@@ -1,0 +1,3 @@
+describe('Details View', function() {
+
+});
