@@ -2,6 +2,10 @@ POI
 ===
 > point of the interest
 
+Places markers on leaflet driven map based on photo's EXIF data
+
+Uses Sinatra(as JSON API) and Backbone Marionette
+
 ## Getting this Working on Your Computer
 
 1. Download this repository.
@@ -18,6 +22,7 @@ POI
 
         $ rake db:migrate
   or
+        
         $ rake db:migrate RACK_ENV=test
 
 5. Install Node.js modules
@@ -32,4 +37,5 @@ POI
 
         $ rackup
   or
+        
         $ thin start
